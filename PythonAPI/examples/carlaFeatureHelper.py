@@ -22,7 +22,7 @@ class RoadOption(IntEnum):
 class CarlaFeatures(object):
     def __init__(self) -> None:
         self.actions = [True, False]
-        self.featuresNames = ["lightIsRed", "distanceToGoal","passedTrafficLight", "performedStop"]
+        self.featuresNames = ["lightIsRed", "distanceToGoal", "performedStop"]
 
         # Parameters needed for saving trajectories
         self.currentTrajectory = []
