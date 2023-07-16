@@ -230,7 +230,6 @@ def main(scenario=0, case=0, drawObservationValues=False, drawStart=False, drawD
                         exit()
                     rewardPerAction = irlRewardClass.calculateRewardPerAction(startingState=currentObservation,
                                                                               actionList=possibleActions)
-                    print("rewardPerAction", rewardPerAction)
                     drawObservation(client, agent, currentObservation,
                                     rewardPerAction, possibleActions, case)
                     actionToTake = possibleActions[np.argmax(rewardPerAction)]
@@ -292,28 +291,6 @@ def drawObservation(client, agent, currentObservation, rewardPerAction, possible
                                              text="Expert\nobserved state features - " + str(currentObservation[0]) + " | " + str(currentObservation[1]), color=carla.Color(0, 0, 0, 0), draw_shadow=True, life_time=.02)
 
 
-def attachSpectatorToAgent(spectator, agent):
-    agent_transform = agent._vehicle.get_transform()
-    agent_transform.location.z += 4
-    spec_transform = spectator.get_transform()
-    print(spec_transform)
-    abs_vector = abs(agent_transform.rotation.get_forward_vector())
-    print(abs_vector)
-    changing_axis = 0
-    if (abs_vector.y > abs_vector.x):
-        changing_axis = 1
-
-    if (changing_axis):
-        spec_transform.location.y = agent_transform.location.y
-    else:
-        spec_transform.location.x = agent_transform.location.x
-    # Get directation that the vehicle is moving
-    # print(agent_transform.rotation.get_right_vector())
-    print(agent_transform.location)
-    print("\n\n\n")
-    spectator.set_transform(spec_transform)
-
-
 def configVehicle(agent):
     # Set frication of wheels to 0.0 for the expert agent,
     physics_control = agent._vehicle.get_physics_control()
@@ -340,7 +317,4 @@ if __name__ == '__main__':
     * 0 = agent acts on the observed trajectory states.
     * 1 = agent is spawn on the unobserved trajectory states.
     """
-    # [0.14229569, -0.8753701]
-    # [0.26073989,-0.46541897]
-    # [ 0.41621339 -0.47571724]
-    main(scenario=0, case=2, featureweights= [ 0.41621339,-0.47571724])
+    main(scenario=0, case=3, featureweights=[6.24935108,-138.10634756])
