@@ -198,7 +198,7 @@ class IRLReward(object):
                                    ] = set(eval(row['transitions']))
         return stateActionTransitions
 
-    def generateProbTransition(self, debug=False):
+    def generateProbTransition(self, debug=False,scenario = 0):
         """
         Function used to create the transition probabilities for every (s,a,s')
         """
@@ -221,28 +221,51 @@ class IRLReward(object):
                 state = outcomes.pop()
                 pTable[int(pair[0]), int(pair[1]), state] = 1/n_outcomes
 
-        # list of custom probabilities holding [s,a,s',p]
-        customProbabilities = [[24, 1, 24, 0.99], [24, 1, 25, 0.01],
-                               [24, 0, 26, 0.99], [24, 0, 27, 0.01],
+        if scenario == 0:
+            # list of custom probabilities holding [s,a,s',p] for scenario 0
+            customProbabilities = [[24, 1, 24, 0.99], [24, 1, 25, 0.01],
+                                [24, 0, 26, 0.99], [24, 0, 27, 0.01],
 
-                               [26, 1, 26, 0.99], [26, 1, 27, 0.01],
-                               [26, 0, 28, 0.99], [26, 0, 29, 0.01],
+                                [25, 1, 25, 0.99], [25, 1, 24, 0.01],
+                                [25, 0, 27, 0.99], [25, 0, 26, 0.01],
 
-                               [28, 1, 28, 0.99], [28, 1, 29, 0.01],
-                            #    [28, 0, 28, 0.99], [28, 1, 29, 0.01],
-                               
-                               [25, 1, 25, 0.99], [25, 1, 24, 0.01],
-                               [25, 0, 27, 0.99], [25, 0, 26, 0.01],
+                                [26, 1, 26, 0.99], [26, 1, 27, 0.01],
+                                [26, 0, 28, 0.99], [26, 0, 29, 0.01],
+                                
+                                [27, 1, 27, 0.99], [27, 1, 26, 0.01],
+                                [27, 0, 29, 0.99], [27, 0, 28, 0.01],
 
-                               [27, 1, 27, 0.99], [27, 1, 26, 0.01],
-                               [27, 0, 29, 0.99], [27, 0, 28, 0.01],
-
-                               [29, 1, 29, 0.99], [29, 1, 28, 0.01],
-                               ]
+                                [28, 1, 28, 0.99], [28, 1, 29, 0.01],
+                                [29, 1, 29, 0.99], [29, 1, 28, 0.01],
+                                ]
+            
+            
+            for probabilty in customProbabilities:
+                pTable[probabilty[0], probabilty[1], probabilty[2]] = probabilty[3]
         
-        
-        for probabilty in customProbabilities:
-            pTable[probabilty[0], probabilty[1], probabilty[2]] = probabilty[3]
+        elif scenario == 1:
+            # list of custom probabilities holding [s,a,s',p] for scenario 1
+            customProbabilities = [[40, 1, 40, 0.99], [40, 1, 41, 0.01],
+                                [40, 0, 42, 0.99], [40, 0, 43, 0.01],
+
+                                [41, 1, 41, 0.99], [41, 1, 40, 0.01],
+                                [41, 0, 43, 0.99], [41, 0, 42, 0.01],
+
+                                [44, 1, 44, 0.99], [44, 1, 45, 0.01],
+                                [45, 1, 45, 0.99], [45, 1, 44, 0.01],
+                                
+                                [42, 1, 42, 0.99], [42, 1, 43, 0.01],
+                                [42, 0, 44, 0.99], [42, 0, 45, 0.01],
+
+                                [43, 1, 43, 0.99], [43, 1, 42, 0.01],
+                                [43, 0, 45, 0.99], [43, 0, 44, 0.01],
+                                ]
+            
+            
+            for probabilty in customProbabilities:
+                pTable[probabilty[0], probabilty[1], probabilty[2]] = probabilty[3]
+
+
 
         if debug:
             for s in range(pTable.shape[0]):
@@ -258,9 +281,8 @@ class IRLReward(object):
 
         return pTable
 
-    def calculateStateActionValue(self, features, actionToPerform):
+    def calculateStateActionValue(self, features, actionToPerform, debug=True):
         currentState = self.findStateInStateTable(features)
-        print("Current state",currentState)
         if not currentState:
             print("state not found based on features", features)
             exit()
@@ -274,6 +296,10 @@ class IRLReward(object):
                                   int(actionToPerform), state]
             reward += p * np.dot(self.findStateFeatures(state).to_numpy()
                            ,self.featureweights.T)
+            
+        if debug:
+            print("Action", actionToPerform, "results in an estimated reward of", reward)
+
         return reward
 
     def findStateInStateTable(self, state):
@@ -282,7 +308,10 @@ class IRLReward(object):
     def findStateFeatures(self, stateNumber):
         return self.stateTable.iloc[stateNumber]
 
-    def calculateRewardPerAction(self, startingState, actionList, debug=False):
+    def calculateRewardPerAction(self, startingState, actionList, debug=True):
+        if debug:
+            currentState = self.findStateInStateTable(startingState)
+            print("Current state",currentState)
         actionToTake = actionList[0]
         actionList = actionList[1:]
         reward = np.array([])
@@ -291,9 +320,6 @@ class IRLReward(object):
         for action in actionList:
             reward = np.append(reward, self.calculateStateActionValue(startingState, action))
 
-
-        if debug:
-                print("rewards", reward, "for actions",actionList)
         return reward
  
 
