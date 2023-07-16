@@ -17,11 +17,11 @@ def maxent(demonstration):
     
     # choose our parameter initialization strategy:
     # initialize parameters with constant
-    init = O.Constant(0.1)
+    init = O.Constant(0.2)
 
     # choose our optimization strategy:
     # we select exponentiated gradient descent with linear learning-rate decay
-    optim = O.Sga(lr=O.exponential_decay(lr0=0.001))
+    optim = O.Sga(lr=O.exponential_decay(lr0=0.2))
 
     # actually do some inverse reinforcement learning
     reward = M.irl(p_transition,stateToFeatures,
