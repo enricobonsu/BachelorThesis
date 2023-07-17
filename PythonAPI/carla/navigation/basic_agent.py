@@ -61,7 +61,7 @@ class BasicAgent(object):
         self._use_bbs_detection = False
         self._target_speed = target_speed
         self._sampling_resolution = 1.0
-        self._base_tlight_threshold = 2.0#5.0  # meters
+        self._base_tlight_threshold = 4.0#5.0  # meters
         self._base_vehicle_threshold = 5.0  # meters
         self._speed_ratio = 1
         self._max_brake = 0.5
@@ -300,7 +300,6 @@ class BasicAgent(object):
                 continue
 
             if traffic_light.state != carla.TrafficLightState.Red:
-                returnCode = 2
                 continue
             
 
