@@ -21,7 +21,7 @@ Contains the setup for the MAXENTIRL algorithm by providing the initial feature 
 * `optimizer.py`
 The optimizer as provided by Maximilian Luz [[2]](#2) which contains generic stochastic gradient-ascent based optimizers.
 * `maxentCarla.py`
-A modified version of the `maxent.py` file provided by Maximilian Luz [[2]](#2) which performs MAXENTIRL algorith.
+A modified version of the `maxent.py` file provided by Maximilian Luz [[2]](#2) which performs MAXENTIRL algorithm.
 
 ### How to use
 The directory contains multiple trajectories as a CSV file with the prefix 'traj'.
