@@ -1,3 +1,4 @@
+
 # BachelorThesis
 This repository contains all the code required for the experiments performed in the bachelor thesis by Enrico Bonsu.
 
@@ -57,8 +58,14 @@ py -3.7 mainTicker.py
 The `mainTicker.py` file contains a main function which parameters can be adjusted to perform different tasks.
 
 
-> **_NOTE:_**  Video links still needs to be added.
+## Videos
+* Expert agent demonstration traffic light red (scenario 1): https://youtu.be/WH3uXHikUok
+* Expert agent demonstration traffic light red (scenario 1): https://youtu.be/-OwEiZlexac
 
+* IRL Agent crossing intersection with red light (scenario 1): https://youtu.be/iQQzLxn280U
+* IRL Agent crossing intersection with green light (scenario 1): https://youtu.be/Vh74B2-Wcdk
+
+* IRL Agent crossing intersection with red light (scenario 2): https://youtu.be/7_WyDZzWzdE
 ## References
 <a id="1">[1]</a> 
 https://github.com/carla-simulator/carla
@@ -68,7 +75,5 @@ Ziebart, Brian & Maas, Andrew & Bagnell, J. & Dey, Anind. (2008). Maximum Entrop
 
 <a id="3">[3]</a> 
 https://github.com/qzed/irl-maxent
-
-
 
 
