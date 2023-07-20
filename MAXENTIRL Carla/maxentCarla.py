@@ -226,7 +226,9 @@ def irl(p_transition, stateToFeatures, terminal, trajectories, optim, init, eps=
     Returns:
         The reward per state as table `[state: Integer] -> reward: Float`.
     """
-    # print(stateToFeatures)
+    delta_list = []
+    theta_list = [[],[]]
+
     stateFeatureMatrix = stateToFeatures.to_numpy()
     stateFeatureMatrix = stateFeatureMatrix[:, :4]
 
@@ -242,6 +244,8 @@ def irl(p_transition, stateToFeatures, terminal, trajectories, optim, init, eps=
 
     # basic gradient descent
     theta = init(n_features)
+    theta_list[0].append(theta[0])
+    theta_list[1].append(theta[1])
     delta = np.inf
 
     optim.reset(theta)
@@ -261,10 +265,13 @@ def irl(p_transition, stateToFeatures, terminal, trajectories, optim, init, eps=
         # perform optimization step and compute delta for convergence
         optim.step(grad)
         delta = np.max(np.abs(theta_old - theta))
-        print(delta, theta)
+        delta_list.append(delta)
+        theta_list[0].append(theta[0])
+        theta_list[1].append(theta[1])
+        # print("delta,theta", delta, theta)
     print("Final Feature weights", theta)
     # re-compute per-state reward and return
-    return stateFeatureMatrix.dot(theta)
+    return stateFeatureMatrix.dot(theta), delta_list, theta_list
 
 
 # -- maximum causal entropy (Ziebart 2010) -------------------------------------
